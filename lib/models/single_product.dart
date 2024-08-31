@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class SingleProduct {
-  final int id;
+  final int? id;
   final String? title;
   final String? description;
   final String? category;
@@ -25,7 +25,7 @@ class SingleProduct {
   final String? thumbnail;
 
   SingleProduct({
-    required this.id,
+    this.id,
     this.title,
     this.description,
     this.category,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/app.dart';
+import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
 
 // ! Handling CERTIFICATE_VERIFY_FAILED
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => GetSingleProductBloc(),
+        ),
+        BlocProvider(
+          create: (context) => GetAllProductsBloc(),
         ),
       ],
       child: App(),

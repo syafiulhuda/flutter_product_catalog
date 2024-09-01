@@ -19,6 +19,7 @@ class SeacrBarWidget extends StatelessWidget {
         horizontal: screenHorizontal * 0.02,
       ),
       child: SearchBar(
+        constraints: BoxConstraints(maxWidth: screenHorizontal * 0.9),
         controller: searchBarControler,
         hintText: "Search something :v",
         trailing: trailing,

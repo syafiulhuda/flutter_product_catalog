@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/app.dart';
+import 'package:flutter_consume_api/bloc/category_list/category_list_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
 
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => GetAllProductsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CategoryListBloc(),
         ),
       ],
       child: App(),

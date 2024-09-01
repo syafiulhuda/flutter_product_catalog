@@ -20,60 +20,106 @@ class DetailPerProduct extends StatelessWidget {
         centerTile: true,
         widget: Text("Product ${product.id}"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Title: ${product.title}",
-              style: const TextStyle(fontSize: 22),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "Price: ${product.price}USD",
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "Description: ${product.description}",
-              textAlign: TextAlign.justify,
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: Image.network(
-                product.thumbnail,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
-                errorBuilder: (BuildContext context, Object error,
-                    StackTrace? stackTrace) {
-                  return const Center(
-                    child: Column(
-                      children: [
-                        Text("Tidak dapat memuat gambar"),
-                        Icon(
-                          Icons.error,
-                          color: Colors.red,
-                          size: 100,
-                        ),
-                      ],
-                    ),
-                  );
-                },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Discount: ${product.discountPercentage}%"),
+                  Text(product.tags.join(" | ")),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Title:",
+                    style: TextStyle(fontSize: 22),
+                  ),
+                  Text(
+                    product.title,
+                    style: const TextStyle(fontSize: 22),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Price: ${product.price}USD",
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: Image.network(
+                  product.thumbnail,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object error,
+                      StackTrace? stackTrace) {
+                    return const Center(
+                      child: Column(
+                        children: [
+                          Text("Tidak dapat memuat gambar"),
+                          Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 100,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Description:",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    product.description,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Center(
+                child: Text(
+                  "Additional Information:",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Warranty: ${product.warrantyInformation}",
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Shipping: ${product.shippingInformation}",
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
         ),
       ),
     );

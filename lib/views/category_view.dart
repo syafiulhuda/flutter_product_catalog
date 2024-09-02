@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/bloc/category_list/category_list_bloc.dart';
@@ -45,12 +47,42 @@ class CategoryView extends StatelessWidget {
           if (state is CategoryListLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is CategoryListSuccess) {
-            return ListView.builder(
+            return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 3 / 4,
+              ),
               itemCount: state.category.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(state.category[index]),
-                  onTap: () {},
+                final category = state.category[index];
+
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/categoricalProduct",
+                      arguments: category,
+                    );
+                  },
+                  child: Card(
+                    color: Colors
+                        .primaries[Random().nextInt(Colors.accents.length)],
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          state.category[index],
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.black.withOpacity(0.8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 );
               },
             );

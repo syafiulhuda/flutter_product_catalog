@@ -1,8 +1,13 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
+import 'package:flutter_consume_api/cubit/address/address_cubit.dart';
 import 'package:flutter_consume_api/models/products.dart';
+import 'package:flutter_consume_api/routes/gridview_route.dart';
+import 'package:flutter_consume_api/widgets/bottom_nav_bar.dart';
 import 'package:flutter_consume_api/widgets/search_bar_widget.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,96 +16,29 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ! Routes
-    final List<Map<String, String>> routes = [
-      {
-        "leading": "assets/delete.png",
-        "name": "Single Product",
-        "route": "/getSingleProductView"
-      },
-      {
-        "leading": "assets/post.png",
-        "name": "All Product",
-        "route": "/getAllProductView"
-      },
-      {
-        "leading": "assets/update.png",
-        "name": "Categories Product",
-        "route": "/category"
-      },
-      {
-        "leading": "assets/delete.png",
-        "name": "Single Product",
-        "route": "/getSingleProductView"
-      },
-      {
-        "leading": "assets/post.png",
-        "name": "All Product",
-        "route": "/getAllProductView"
-      },
-      {
-        "leading": "assets/update.png",
-        "name": "Categories Product",
-        "route": "/category"
-      },
-      {
-        "leading": "assets/delete.png",
-        "name": "Single Product",
-        "route": "/getSingleProductView"
-      },
-      {
-        "leading": "assets/post.png",
-        "name": "All Product",
-        "route": "/getAllProductView"
-      },
-      {
-        "leading": "assets/update.png",
-        "name": "Categories Product",
-        "route": "/category"
-      },
-      {
-        "leading": "assets/delete.png",
-        "name": "Single Product",
-        "route": "/getSingleProductView"
-      },
-      {
-        "leading": "assets/post.png",
-        "name": "All Product",
-        "route": "/getAllProductView"
-      },
-      {
-        "leading": "assets/update.png",
-        "name": "Categories Product",
-        "route": "/category"
-      },
-      {
-        "leading": "assets/delete.png",
-        "name": "Single Product",
-        "route": "/getSingleProductView"
-      },
-      {
-        "leading": "assets/post.png",
-        "name": "All Product",
-        "route": "/getAllProductView"
-      },
-      {
-        "leading": "assets/update.png",
-        "name": "Categories Product",
-        "route": "/category"
-      },
-    ];
+    List<Map<String, dynamic>> gridviewRoute = GridviewRoute().routes;
 
+    // ! MediaQuery
     final screenHorizontal = MediaQuery.of(context).size.width;
     final screenVertical = MediaQuery.of(context).size.height;
-
-    GetSingleProductBloc getSingleProductBlocByName =
-        context.read<GetSingleProductBloc>();
-
-    TextEditingController searchBarControler = TextEditingController();
-
+    // ! AppBar
     double appBarHeight = AppBar().preferredSize.height;
 
-    // ! Untuk Section Gridview Random Product
+    // ! Bloc
+    GetSingleProductBloc getSingleProductBlocByName =
+        context.read<GetSingleProductBloc>();
     GetAllProductsBloc getAllProductsBloc = context.read<GetAllProductsBloc>();
+
+    // ! Search Bar controler
+    TextEditingController searchBarControler = TextEditingController();
+
+    // ! Addresses
+    List<String> addresses = [
+      "Jl. ABC No. 123, Serpong, Tangerang",
+      "Jl. DEF No. 456, Rawamangun, Jakarta",
+      "Jl. GHI No. 789, Ciwidey, Bandung",
+      "Jl. JKL No. 012, Meksiko, Surabaya",
+    ];
 
     // ! Dijalankan pertama kali
     // ! Jalankan event FetchUser setelah frame pertama dirender
@@ -120,90 +58,106 @@ class HomePage extends StatelessWidget {
     });
 
     return Scaffold(
+      appBar: AppBar(
+        // ? Search Bar
+        title: SeacrBarWidget(
+          screenVertical: screenVertical,
+          screenHorizontal: screenHorizontal,
+          searchBarControler: searchBarControler,
+          trailing: [
+            BlocConsumer<GetSingleProductBloc, GetSingleProductState>(
+              listener: (context, state) {
+                if (state is GetSingleProductError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message),
+                    ),
+                  );
+                } else if (state is GetSingleProductSuccess) {
+                  Navigator.pushNamed(
+                    context,
+                    "/searchSingleProductByName",
+                    arguments: state.singleProduct,
+                  );
+                }
+              },
+              listenWhen: (previous, current) {
+                return current is GetSingleProductError ||
+                    current is GetSingleProductSuccess;
+              },
+              builder: (context, state) {
+                return IconButton(
+                  onPressed: () {
+                    getSingleProductBlocByName.add(
+                      FetchSingleProductByName(
+                        title: searchBarControler.text,
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.search),
+                );
+              },
+            ),
+          ],
+        ),
+        actions: const [
+          Icon(Icons.message, size: 35),
+          SizedBox(width: 10),
+          Icon(Icons.notifications, size: 35),
+          SizedBox(width: 10),
+          Icon(Icons.menu, size: 35),
+          SizedBox(width: 10),
+        ],
+      ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: screenVertical * 1.0,
           child: ListView(
-            padding: EdgeInsets.only(top: appBarHeight - 10),
             children: [
-              const SizedBox(height: 10),
-              // ? Search Bar
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: SeacrBarWidget(
-                      screenHorizontal: screenHorizontal,
-                      searchBarControler: searchBarControler,
-                      trailing: [
-                        BlocConsumer<GetSingleProductBloc,
-                            GetSingleProductState>(
-                          listener: (context, state) {
-                            if (state is GetSingleProductError) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(state.message),
-                                ),
-                              );
-                            } else if (state is GetSingleProductSuccess) {
-                              Navigator.pushNamed(
-                                context,
-                                "/searchSingleProductByName",
-                                arguments: state.singleProduct,
-                              );
-                            }
-                          },
-                          listenWhen: (previous, current) {
-                            return current is GetSingleProductError ||
-                                current is GetSingleProductSuccess;
-                          },
-                          builder: (context, state) {
-                            return IconButton(
-                              onPressed: () {
-                                getSingleProductBlocByName.add(
-                                  FetchSingleProductByName(
-                                    title: searchBarControler.text,
-                                  ),
-                                );
-                              },
-                              icon: const Icon(Icons.search),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.message, size: 35),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.notifications, size: 35),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.menu, size: 35),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              const SizedBox(height: 10),
               // ? Alamat
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: screenHorizontal * 0.02,
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(
+                    const SizedBox(width: 5),
+                    const Icon(
                       Icons.maps_home_work,
                       color: Colors.greenAccent,
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      "Jl. ABC No. 123, Serpong, Tangerang",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: BlocBuilder<AddressCubit, String>(
+                        builder: (context, state) {
+                          return DropdownButton<String>(
+                            icon: const Icon(
+                                Icons.arrow_drop_down_circle_outlined),
+                            value: state,
+                            isExpanded: true,
+                            items: addresses.map((String address) {
+                              return DropdownMenuItem<String>(
+                                value: address,
+                                child: Text(
+                                  address,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              if (newValue != null) {
+                                context
+                                    .read<AddressCubit>()
+                                    .selectedAddress(newValue);
+                              }
+                            },
+                          );
+                        },
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Icon(Icons.arrow_drop_down_circle_outlined),
                   ],
                 ),
               ),
@@ -301,9 +255,9 @@ class HomePage extends StatelessWidget {
                     mainAxisSpacing: 10,
                     childAspectRatio: 3 / 2,
                   ),
-                  itemCount: routes.length,
+                  itemCount: gridviewRoute.length,
                   itemBuilder: (context, index) {
-                    final route = routes[index];
+                    final route = gridviewRoute[index];
                     final title = route["name"]!;
                     final leading = route["leading"]!;
 
@@ -358,71 +312,102 @@ class HomePage extends StatelessWidget {
                 },
                 builder: (context, state) {
                   if (state is GetAllProductsSuccess) {
-                    return Container(
-                      height: screenVertical * 0.5,
-                      padding: const EdgeInsets.all(0),
-                      child: GridView.builder(
-                        padding: const EdgeInsets.only(bottom: 60),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 3 / 4,
-                        ),
-                        itemCount: state.products.products.length,
-                        itemBuilder: (context, index) {
-                          final product = state.products.products[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                "/detailPerProduct",
-                                // ! kirim index per product pada tiap item di List Tile
-                                arguments: product,
-                              );
-                            },
-                            child: Card(
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Image.network(
-                                      product.thumbnail,
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          product.title,
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          "${product.price} USD",
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 60),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3 / 4,
                       ),
+                      itemCount: state.products.products.length,
+                      itemBuilder: (context, index) {
+                        final product = state.products.products[index];
+
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              "/detailPerProduct",
+                              // ! kirim index per product pada tiap item di List Tile
+                              arguments: product,
+                            );
+                          },
+                          child: Card(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Image.network(
+                                    product.thumbnail,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (BuildContext context,
+                                        Object error, StackTrace? stackTrace) {
+                                      return const Center(
+                                        child: Column(
+                                          children: [
+                                            Text("Tidak dapat memuat gambar"),
+                                            Icon(
+                                              Icons.error,
+                                              color: Colors.red,
+                                              size: 100,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        product.title,
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        "${product.price} USD",
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     );
                   } else if (state is GetAllProductsLoading) {
                     return const Center(
@@ -439,6 +424,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

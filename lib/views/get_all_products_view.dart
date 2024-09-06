@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
-import 'package:flutter_consume_api/models/products.dart';
+import 'package:flutter_consume_api/models/products_model.dart';
 import 'package:flutter_consume_api/widgets/custom_app_bar.dart';
 
 class GetAllProductsView extends StatelessWidget {

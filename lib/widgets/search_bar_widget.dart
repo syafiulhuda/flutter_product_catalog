@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class SeacrBarWidget extends StatelessWidget {
@@ -5,6 +6,8 @@ class SeacrBarWidget extends StatelessWidget {
   final double screenVertical;
   final TextEditingController searchBarControler;
   final List<Widget>? trailing;
+  final VoidCallback onSubmit;
+  final VoidCallback onTapOut;
 
   const SeacrBarWidget({
     super.key,
@@ -12,6 +15,8 @@ class SeacrBarWidget extends StatelessWidget {
     required this.screenVertical,
     required this.searchBarControler,
     this.trailing,
+    required this.onSubmit,
+    required this.onTapOut,
   });
 
   @override
@@ -29,6 +34,12 @@ class SeacrBarWidget extends StatelessWidget {
       controller: searchBarControler,
       hintText: "Search something :v",
       trailing: trailing,
+      onSubmitted: (value) {
+        onSubmit();
+      },
+      onTapOutside: (value) {
+        onTapOut();
+      },
     );
   }
 }

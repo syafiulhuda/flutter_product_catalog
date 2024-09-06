@@ -33,6 +33,9 @@ class CategoricalProduct extends StatelessWidget {
           if (state is GetProductByCategoryLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is GetProductByCategorySuccess) {
+            if (state.products.products.isEmpty) {
+              return const Center(child: Text('No products available.'));
+            }
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -49,6 +52,9 @@ class CategoricalProduct extends StatelessWidget {
                           product.thumbnail,
                           fit: BoxFit.cover,
                           width: double.infinity,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.error);
+                          },
                         ),
                       ),
                       Padding(
@@ -64,7 +70,7 @@ class CategoricalProduct extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 5),
-                            Text("Price: ${product.price}"),
+                            Text("Price: \$${product.price}"),
                           ],
                         ),
                       ),

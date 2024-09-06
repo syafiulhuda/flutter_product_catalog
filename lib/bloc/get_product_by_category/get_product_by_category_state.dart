@@ -12,7 +12,7 @@ final class GetProductByCategoryInitial extends GetProductByCategoryState {}
 final class GetProductByCategoryLoading extends GetProductByCategoryState {}
 
 final class GetProductByCategorySuccess extends GetProductByCategoryState {
-  final GetProductByCategory products;
+  final Products products;
 
   const GetProductByCategorySuccess({required this.products});
 

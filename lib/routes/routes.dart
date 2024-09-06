@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/bloc/category_list/category_list_bloc.dart';
@@ -5,12 +7,18 @@ import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.
 import 'package:flutter_consume_api/bloc/get_product_by_category/get_product_by_category_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
 import 'package:flutter_consume_api/bloc/user_login/user_login_bloc.dart';
-import 'package:flutter_consume_api/models/products.dart';
+import 'package:flutter_consume_api/models/products_model.dart';
 import 'package:flutter_consume_api/models/single_product.dart';
+import 'package:flutter_consume_api/pages/feed_page.dart';
+import 'package:flutter_consume_api/home.dart';
 import 'package:flutter_consume_api/pages/home_page.dart';
 import 'package:flutter_consume_api/pages/login_page.dart';
 import 'package:flutter_consume_api/pages/not_found.dart';
+import 'package:flutter_consume_api/pages/account_page.dart';
+import 'package:flutter_consume_api/pages/official_store_page.dart';
+import 'package:flutter_consume_api/pages/transaksi_page.dart';
 import 'package:flutter_consume_api/views/category_view.dart';
+import 'package:flutter_consume_api/views/details/account_detail.dart';
 import 'package:flutter_consume_api/views/details/categorical_product.dart';
 import 'package:flutter_consume_api/views/details/detail_per_product.dart';
 import 'package:flutter_consume_api/views/details/search_single_product_by_name.dart';
@@ -35,9 +43,41 @@ class AppRoutes {
             child: const LoginPage(),
           ),
         );
+      case "/home":
+        return MaterialPageRoute(
+          builder: (context) => const Home(),
+        );
       case "/homepage":
         return MaterialPageRoute(
           builder: (context) => const HomePage(),
+        );
+      case "/feed":
+        return MaterialPageRoute(
+          builder: (context) => const FeedPage(),
+        );
+      case "/officialStore":
+        return MaterialPageRoute(
+          builder: (context) => const OfficialStorePage(),
+        );
+      case "/transaksi":
+        return MaterialPageRoute(
+          builder: (context) => const TransaksiPage(),
+        );
+      case "/account":
+        return MaterialPageRoute(
+          builder: (context) => const AccountPage(),
+        );
+      case "/accountDetail":
+        return MaterialPageRoute(
+          builder: (context) => const AccountDetail(),
+        );
+
+      case "/category":
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: categoryListBloc,
+            child: const CategoryView(),
+          ),
         );
       case "/getSingleProductView":
         return MaterialPageRoute(
@@ -71,21 +111,15 @@ class AppRoutes {
             child: SearchSingleProductByName(productName: productName),
           ),
         );
-      case "/category":
-        return MaterialPageRoute(
-          builder: (context) => BlocProvider.value(
-            value: categoryListBloc,
-            child: const CategoryView(),
-          ),
-        );
       case "/categoricalProduct":
-        final productCategory = settings.arguments as String;
-
+        final productCategory = settings.arguments;
+        print(
+            "Navigating to CategoricalProduct with category: $productCategory");
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
             value: getProductByCategoryBloc,
             child: CategoricalProduct(
-              category: productCategory,
+              category: productCategory as String,
             ),
           ),
         );

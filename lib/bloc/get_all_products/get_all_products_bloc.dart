@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_consume_api/models/products.dart';
+import 'package:flutter_consume_api/models/products_model.dart';
 
 import 'package:http/http.dart' as http;
 

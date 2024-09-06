@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_consume_api/models/get_product_by_category.dart';
+import 'package:flutter_consume_api/models/products_model.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -28,7 +28,7 @@ class GetProductByCategoryBloc
       if (response.statusCode == 200) {
         Map<String, dynamic> data = json.decode(response.body);
 
-        GetProductByCategory product = GetProductByCategory.fromMap(data);
+        Products product = Products.fromMap(data);
 
         emit(GetProductByCategorySuccess(products: product));
       }

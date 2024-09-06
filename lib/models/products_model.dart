@@ -2,26 +2,24 @@
 
 import 'dart:convert';
 
-class GetProductByCategory {
+class Products {
   final List<Product> products;
   final int total;
   final int skip;
   final int limit;
 
-  GetProductByCategory({
+  Products({
     required this.products,
     required this.total,
     required this.skip,
     required this.limit,
   });
 
-  factory GetProductByCategory.fromJson(String str) =>
-      GetProductByCategory.fromMap(json.decode(str));
+  factory Products.fromJson(String str) => Products.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory GetProductByCategory.fromMap(Map<String, dynamic> json) =>
-      GetProductByCategory(
+  factory Products.fromMap(Map<String, dynamic> json) => Products(
         products:
             List<Product>.from(json["products"].map((x) => Product.fromMap(x))),
         total: json["total"],
@@ -47,6 +45,7 @@ class Product {
   final double rating;
   final int stock;
   final List<String> tags;
+  final String? brand;
   final String sku;
   final int weight;
   final Dimensions dimensions;
@@ -70,6 +69,7 @@ class Product {
     required this.rating,
     required this.stock,
     required this.tags,
+    this.brand,
     required this.sku,
     required this.weight,
     required this.dimensions,
@@ -98,6 +98,7 @@ class Product {
         rating: json["rating"]?.toDouble(),
         stock: json["stock"],
         tags: List<String>.from(json["tags"].map((x) => x)),
+        brand: json["brand"],
         sku: json["sku"],
         weight: json["weight"],
         dimensions: Dimensions.fromMap(json["dimensions"]),
@@ -118,21 +119,22 @@ class Product {
         "id": id,
         "title": title,
         "description": description,
-        "category": categoryValues.reverse[category],
+        "category": categoryValues.reverseMap[category],
         "price": price,
         "discountPercentage": discountPercentage,
         "rating": rating,
         "stock": stock,
         "tags": List<dynamic>.from(tags.map((x) => x)),
+        "brand": brand,
         "sku": sku,
         "weight": weight,
         "dimensions": dimensions.toMap(),
         "warrantyInformation": warrantyInformation,
         "shippingInformation": shippingInformation,
         "availabilityStatus":
-            availabilityStatusValues.reverse[availabilityStatus],
+            availabilityStatusValues.reverseMap[availabilityStatus],
         "reviews": List<dynamic>.from(reviews.map((x) => x.toMap())),
-        "returnPolicy": returnPolicyValues.reverse[returnPolicy],
+        "returnPolicy": returnPolicyValues.reverseMap[returnPolicy],
         "minimumOrderQuantity": minimumOrderQuantity,
         "meta": meta.toMap(),
         "images": List<dynamic>.from(images.map((x) => x)),
@@ -145,7 +147,7 @@ enum AvailabilityStatus { IN_STOCK, LOW_STOCK, OUT_OF_STOCK }
 final availabilityStatusValues = EnumValues({
   "In Stock": AvailabilityStatus.IN_STOCK,
   "Low Stock": AvailabilityStatus.LOW_STOCK,
-  "Out of Stock": AvailabilityStatus.OUT_OF_STOCK
+  "Out of Stock": AvailabilityStatus.OUT_OF_STOCK,
 });
 
 enum Category {
@@ -172,7 +174,7 @@ enum Category {
   WOMENS_DRESSES,
   WOMENS_JEWELLERY,
   WOMENS_SHOES,
-  WOMENS_WATCHES
+  WOMENS_WATCHES,
 }
 
 final categoryValues = EnumValues({
@@ -199,7 +201,7 @@ final categoryValues = EnumValues({
   "womens-dresses": Category.WOMENS_DRESSES,
   "womens-jewellery": Category.WOMENS_JEWELLERY,
   "womens-shoes": Category.WOMENS_SHOES,
-  "womens-watches": Category.WOMENS_WATCHES
+  "womens-watches": Category.WOMENS_WATCHES,
 });
 
 class Dimensions {
@@ -268,7 +270,7 @@ enum ReturnPolicy {
   THE_30_DAYS_RETURN_POLICY,
   THE_60_DAYS_RETURN_POLICY,
   THE_7_DAYS_RETURN_POLICY,
-  THE_90_DAYS_RETURN_POLICY
+  THE_90_DAYS_RETURN_POLICY,
 }
 
 final returnPolicyValues = EnumValues({
@@ -276,7 +278,7 @@ final returnPolicyValues = EnumValues({
   "30 days return policy": ReturnPolicy.THE_30_DAYS_RETURN_POLICY,
   "60 days return policy": ReturnPolicy.THE_60_DAYS_RETURN_POLICY,
   "7 days return policy": ReturnPolicy.THE_7_DAYS_RETURN_POLICY,
-  "90 days return policy": ReturnPolicy.THE_90_DAYS_RETURN_POLICY
+  "90 days return policy": ReturnPolicy.THE_90_DAYS_RETURN_POLICY,
 });
 
 class Review {
@@ -316,13 +318,10 @@ class Review {
 }
 
 class EnumValues<T> {
-  Map<String, T> map;
+  late Map<String, T> map;
   late Map<T, String> reverseMap;
 
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
+  EnumValues(this.map) {
     reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
   }
 }

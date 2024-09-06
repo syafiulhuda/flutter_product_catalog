@@ -1,14 +1,14 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
 import 'package:flutter_consume_api/cubit/address/address_cubit.dart';
-import 'package:flutter_consume_api/models/products.dart';
+import 'package:flutter_consume_api/models/products_model.dart';
 import 'package:flutter_consume_api/routes/gridview_route.dart';
-import 'package:flutter_consume_api/widgets/bottom_nav_bar.dart';
 import 'package:flutter_consume_api/widgets/search_bar_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -21,8 +21,6 @@ class HomePage extends StatelessWidget {
     // ! MediaQuery
     final screenHorizontal = MediaQuery.of(context).size.width;
     final screenVertical = MediaQuery.of(context).size.height;
-    // ! AppBar
-    double appBarHeight = AppBar().preferredSize.height;
 
     // ! Bloc
     GetSingleProductBloc getSingleProductBlocByName =
@@ -74,11 +72,19 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 } else if (state is GetSingleProductSuccess) {
+                  // ? Mengosongkan searchBarControler setelah pencarian berhasil
+                  // ? Lalu arahka ke halaman searchSingleProductByName
                   Navigator.pushNamed(
                     context,
                     "/searchSingleProductByName",
                     arguments: state.singleProduct,
-                  );
+                  ).then((_) {
+                    // Tutup keyboard setelah kembali
+                    FocusScope.of(context).unfocus();
+
+                    // Kosongkan teks di search bar
+                    searchBarControler.clear();
+                  });
                 }
               },
               listenWhen: (previous, current) {
@@ -99,13 +105,21 @@ class HomePage extends StatelessWidget {
               },
             ),
           ],
+          onSubmit: () {
+            getSingleProductBlocByName.add(
+              FetchSingleProductByName(
+                title: searchBarControler.text,
+              ),
+            );
+          },
+          onTapOut: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
         ),
         actions: const [
-          Icon(Icons.message, size: 35),
+          FaIcon(FontAwesomeIcons.envelopeOpenText, size: 30),
           SizedBox(width: 10),
-          Icon(Icons.notifications, size: 35),
-          SizedBox(width: 10),
-          Icon(Icons.menu, size: 35),
+          FaIcon(FontAwesomeIcons.cartShopping, size: 30),
           SizedBox(width: 10),
         ],
       ),
@@ -252,7 +266,6 @@ class HomePage extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
                     childAspectRatio: 3 / 2,
                   ),
                   itemCount: gridviewRoute.length,
@@ -315,7 +328,9 @@ class HomePage extends StatelessWidget {
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.only(bottom: 60),
+                      padding: EdgeInsets.only(
+                        bottom: screenVertical * .2,
+                      ),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -424,7 +439,6 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

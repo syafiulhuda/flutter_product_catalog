@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:flutter_consume_api/models/products.dart';
+import 'package:flutter_consume_api/models/products_model.dart';
 import 'package:flutter_consume_api/widgets/custom_app_bar.dart';
 
 class DetailPerProduct extends StatelessWidget {

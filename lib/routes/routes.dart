@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/bloc/category_list/category_list_bloc.dart';
+import 'package:flutter_consume_api/bloc/get_all_cart/get_all_cart_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_product_by_category/get_product_by_category_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
@@ -33,6 +34,7 @@ class AppRoutes {
   GetProductByCategoryBloc getProductByCategoryBloc =
       GetProductByCategoryBloc();
   UserLoginBloc userLoginBloc = UserLoginBloc();
+  GetAllCartBloc getAllCartBloc = GetAllCartBloc();
 
   Route onRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -61,7 +63,10 @@ class AppRoutes {
         );
       case "/transaksi":
         return MaterialPageRoute(
-          builder: (context) => const TransaksiPage(),
+          builder: (context) => BlocProvider.value(
+            value: getAllCartBloc,
+            child: const TransaksiPage(),
+          ),
         );
       case "/account":
         return MaterialPageRoute(

@@ -76,10 +76,11 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
             return Center(
-              child: SizedBox(
-                height: screenVertical * 0.9,
-                width: screenHorizontal * 0.9,
+              child: IntrinsicHeight(
                 child: Card(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: screenHorizontal * 0.05,
+                  ),
                   elevation: 5,
                   color: Colors.grey.shade300,
                   child: Padding(
@@ -208,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -226,6 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 15),
                       ],
                     ),
                   ),

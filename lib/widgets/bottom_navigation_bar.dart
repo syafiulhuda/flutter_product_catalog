@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -34,7 +35,8 @@ class BottomNavBar extends StatelessWidget {
           gap: 5,
           tabs: const [
             GButton(
-              icon: Icons.camera_enhance,
+              icon: FontAwesomeIcons.cameraRotate,
+              iconSize: 25,
               text: 'Home',
             ),
             GButton(
@@ -46,7 +48,8 @@ class BottomNavBar extends StatelessWidget {
               text: 'Official Store',
             ),
             GButton(
-              icon: Icons.shopping_cart,
+              icon: FontAwesomeIcons.solidNoteSticky,
+              iconSize: 25,
               text: 'Transaksi',
             ),
             GButton(

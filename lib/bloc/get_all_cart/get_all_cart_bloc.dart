@@ -20,7 +20,7 @@ class GetAllCartBloc extends Bloc<GetAllCartEvent, GetAllCartState> {
     try {
       emit(GetAllCartLoading());
 
-      Uri url = Uri.parse("https://dummyjson.com/carts");
+      Uri url = Uri.parse("https://dummyjson.com/carts/");
 
       var response = await http.get(url);
 

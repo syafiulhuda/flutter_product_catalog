@@ -3,8 +3,9 @@
     
     <application
         android:label="flutter_consume_api"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:name="${applicationName}" 
+        android:icon="@mipmap/ic_launcher" 
+        android:usesCleartextTraffic="true">         
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -14,6 +14,8 @@ class _LoginPageState extends State<LoginPage> {
   late TextEditingController usernameControler;
   late TextEditingController passwordControler;
 
+  bool isLoading = false; // state untuk indikator loading
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +31,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
+    setState(() {
+      isLoading = true; // tampilkan circular progress indicator
+    });
+
     UserLoginBloc userLoginBloc = context.read<UserLoginBloc>();
     userLoginBloc.add(
       LoginUser(
@@ -54,16 +60,20 @@ class _LoginPageState extends State<LoginPage> {
         body: BlocConsumer<UserLoginBloc, UserLoginState>(
           listener: (context, state) {
             if (state is UserLoginError) {
+              setState(() {
+                isLoading = false; // ? hentikan loading jika error
+              });
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
+                  backgroundColor: Colors.red,
                 ),
               );
             } else if (state is UserLoginSuccess) {
-              Navigator.pushReplacementNamed(
-                context,
-                "/home",
-              );
+              setState(() {
+                isLoading = false; // ? hentikan loading jika sukses
+              });
+              Navigator.pushReplacementNamed(context, "/home");
             }
           },
           listenWhen: (previous, current) {
@@ -71,10 +81,9 @@ class _LoginPageState extends State<LoginPage> {
           },
           builder: (context, state) {
             if (state is UserLoginLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
+
             return Center(
               child: IntrinsicHeight(
                 child: Card(
@@ -88,9 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(
-                          height: 15,
-                        ),
+                        const SizedBox(height: 15),
                         const Text(
                           "Hi there!",
                           style: TextStyle(
@@ -151,25 +158,27 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            _login();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.greenAccent,
-                            minimumSize: const Size(
-                              double.infinity,
-                              50,
-                            ),
-                          ),
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        isLoading
+                            ? const CircularProgressIndicator() // tampilkan loading jika isLoading true
+                            : ElevatedButton(
+                                onPressed: () {
+                                  _login();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.greenAccent,
+                                  minimumSize: const Size(
+                                    double.infinity,
+                                    50,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                         const SizedBox(height: 15),
                         const Row(
                           children: [

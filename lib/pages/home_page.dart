@@ -116,11 +116,17 @@ class HomePage extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
         ),
-        actions: const [
-          FaIcon(FontAwesomeIcons.envelopeOpenText, size: 30),
-          SizedBox(width: 10),
-          FaIcon(FontAwesomeIcons.cartShopping, size: 30),
-          SizedBox(width: 10),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: const FaIcon(FontAwesomeIcons.envelopeOpenText, size: 30)),
+          const SizedBox(width: 10),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/keranjang");
+              },
+              icon: const FaIcon(FontAwesomeIcons.cartShopping, size: 30)),
+          const SizedBox(width: 10),
         ],
       ),
       body: SingleChildScrollView(

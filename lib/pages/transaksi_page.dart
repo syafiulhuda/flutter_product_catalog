@@ -16,6 +16,28 @@ class TransaksiPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // ! Routes
     List<Map<String, dynamic>> transactionRoute = TransactionRoute().settings;
+    List<String> status = [
+      "Diproses",
+      "Diproses",
+      "Diproses",
+      "Diproses",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+      "Selesai",
+    ];
 
     // ! MediaQuery
     final screenHorizontal = MediaQuery.of(context).size.width;
@@ -100,11 +122,17 @@ class TransaksiPage extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
         ),
-        actions: const [
-          FaIcon(FontAwesomeIcons.envelopeOpenText, size: 30),
-          SizedBox(width: 10),
-          FaIcon(FontAwesomeIcons.cartShopping, size: 30),
-          SizedBox(width: 10),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: const FaIcon(FontAwesomeIcons.envelopeOpenText, size: 30)),
+          const SizedBox(width: 10),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/keranjang");
+              },
+              icon: const FaIcon(FontAwesomeIcons.cartShopping, size: 30)),
+          const SizedBox(width: 10),
         ],
       ),
       body: Column(
@@ -219,12 +247,14 @@ class TransaksiPage extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(5.0),
                                         ),
-                                        color: Colors.yellowAccent,
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(5.0),
+                                        color: (status[index] == "Diproses")
+                                            ? Colors.yellowAccent
+                                            : Colors.greenAccent,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
                                           child: Text(
-                                            "Diproses",
-                                            style: TextStyle(
+                                            status[index],
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -237,28 +267,32 @@ class TransaksiPage extends StatelessWidget {
                               ),
                               // ? Line 2
                               const SizedBox(height: 10),
-                              const Row(
+                              Row(
                                 children: [
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   CircleAvatar(
                                     radius: 25,
-                                    child: Icon(
-                                      Icons.smartphone,
+                                    backgroundImage: NetworkImage(
+                                      state.getAllCartModel.carts[index]
+                                          .products[0].thumbnail,
                                     ),
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Samsung Galaxy S24 5G 8/512GB - Black Amber",
-                                          style: TextStyle(
+                                          state.getAllCartModel.carts[index]
+                                              .products[0].title,
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                        Text("1 barang"),
+                                        Text(
+                                          "${state.getAllCartModel.carts[index].products[0].quantity} barang",
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -266,21 +300,21 @@ class TransaksiPage extends StatelessWidget {
                               ),
                               // ? Line 3
                               const SizedBox(height: 10),
-                              const Row(
+                              Row(
                                 children: [
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text("Total Belanja"),
+                                      const Text("Total Belanja"),
                                       Text(
-                                        "Rp. 5.092.180",
-                                        style: TextStyle(
+                                        "${state.getAllCartModel.carts[index].products[0].price} USD",
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                     ],
                                   ),
                                 ],

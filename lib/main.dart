@@ -6,6 +6,7 @@ import 'package:flutter_consume_api/app.dart';
 import 'package:flutter_consume_api/bloc/category_list/category_list_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_cart/get_all_cart_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
+import 'package:flutter_consume_api/bloc/get_feed/get_feed_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_product_by_category/get_product_by_category_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
 import 'package:flutter_consume_api/bloc/user_login/user_login_bloc.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => GetAllCartBloc(),
+        ),
+        BlocProvider(
+          create: (context) => GetFeedBloc(),
         ),
       ],
       child: App(),

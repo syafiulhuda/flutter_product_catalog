@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_consume_api/bloc/category_list/category_list_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_cart/get_all_cart_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_all_products/get_all_products_bloc.dart';
+import 'package:flutter_consume_api/bloc/get_feed/get_feed_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_product_by_category/get_product_by_category_bloc.dart';
 import 'package:flutter_consume_api/bloc/get_single_product/get_single_product_bloc.dart';
 import 'package:flutter_consume_api/bloc/user_login/user_login_bloc.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_consume_api/pages/not_found.dart';
 import 'package:flutter_consume_api/pages/account_page.dart';
 import 'package:flutter_consume_api/pages/official_store_page.dart';
 import 'package:flutter_consume_api/pages/transaksi_page.dart';
+import 'package:flutter_consume_api/views/cart_shoping_view.dart';
 import 'package:flutter_consume_api/views/category_view.dart';
 import 'package:flutter_consume_api/views/details/account_detail.dart';
 import 'package:flutter_consume_api/views/details/categorical_product.dart';
@@ -35,6 +37,7 @@ class AppRoutes {
       GetProductByCategoryBloc();
   UserLoginBloc userLoginBloc = UserLoginBloc();
   GetAllCartBloc getAllCartBloc = GetAllCartBloc();
+  GetFeedBloc getFeedBloc = GetFeedBloc();
 
   Route onRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -55,7 +58,10 @@ class AppRoutes {
         );
       case "/feed":
         return MaterialPageRoute(
-          builder: (context) => const FeedPage(),
+          builder: (context) => BlocProvider.value(
+            value: getFeedBloc,
+            child: FeedPage(),
+          ),
         );
       case "/officialStore":
         return MaterialPageRoute(
@@ -82,6 +88,13 @@ class AppRoutes {
           builder: (context) => BlocProvider.value(
             value: categoryListBloc,
             child: const CategoryView(),
+          ),
+        );
+      case "/keranjang":
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: getAllCartBloc,
+            child: const CartShopingView(),
           ),
         );
       case "/getSingleProductView":

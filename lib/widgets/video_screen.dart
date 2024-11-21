@@ -159,7 +159,7 @@ class OptionsScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       const Text(
-                        'flutter_developer02',
+                        'user00123',
                         style: TextStyle(
                           color: Colors.white,
                         ),

@@ -20,6 +20,8 @@ class UserLoginBloc extends Bloc<UserLoginEvent, UserLoginState> {
     emit(UserLoginLoading());
 
     try {
+      // username: emiliys
+      // password: emiliyspass
       Uri url = Uri.parse("https://dummyjson.com/user/login");
 
       var response = await http.post(
@@ -33,21 +35,25 @@ class UserLoginBloc extends Bloc<UserLoginEvent, UserLoginState> {
       if (response.statusCode == 200) {
         Map<String, dynamic> data = json.decode(response.body);
 
-        if (data.containsKey('token') && data['token'] != null) {
-          print("Response status: ${response.statusCode}");
-          print("Response body: ${response.body}");
+        UserLogin loginData = UserLogin.fromMap(data);
 
-          UserLogin loginData = UserLogin.fromMap(data);
+        emit(UserLoginSuccess(userLogin: loginData));
 
-          emit(UserLoginSuccess(userLogin: loginData));
-        } else {
-          // Jika respons tidak memiliki token
-          emit(
-            const UserLoginError(
-              message: "Login gagal, token tidak valid",
-            ),
-          );
-        }
+        // if (data.containsKey('token') && data['token'] != null) {
+        //   print("Response status: ${response.statusCode}");
+        //   print("Response body: ${response.body}");
+
+        //   UserLogin loginData = UserLogin.fromMap(data);
+
+        //   emit(UserLoginSuccess(userLogin: loginData));
+        // } else {
+        //   // Jika respons tidak memiliki token
+        //   emit(
+        //     const UserLoginError(
+        //       message: "Login gagal, token tidak valid",
+        //     ),
+        //   );
+        // }
       } else {
         // Jika status code selain 200
         emit(

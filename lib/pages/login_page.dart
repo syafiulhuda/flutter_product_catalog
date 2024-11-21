@@ -39,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
     userLoginBloc.add(
       LoginUser(
         userLogin: UserLogin(
+          // username: emiliys
+          // password: emiliyspass
           username: usernameControler.text,
           password: passwordControler.text,
         ),

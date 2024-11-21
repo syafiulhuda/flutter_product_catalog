@@ -441,6 +441,29 @@ class AccountPage extends StatelessWidget {
                   ),
                 ),
               ),
+              // ? Log Out
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    "/login",
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 5,
+                  fixedSize: Size(screenHorizontal * 0.9, 40),
+                  backgroundColor: Colors.greenAccent,
+                ),
+                child: const Text(
+                  "Keluar",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
             ],
           ),
         ),

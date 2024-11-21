@@ -18,15 +18,18 @@ import 'package:flutter_consume_api/pages/login_page.dart';
 import 'package:flutter_consume_api/pages/not_found.dart';
 import 'package:flutter_consume_api/pages/account_page.dart';
 import 'package:flutter_consume_api/pages/official_store_page.dart';
+import 'package:flutter_consume_api/pages/splash_screen.dart';
 import 'package:flutter_consume_api/pages/transaksi_page.dart';
 import 'package:flutter_consume_api/views/cart_shoping_view.dart';
 import 'package:flutter_consume_api/views/category_view.dart';
 import 'package:flutter_consume_api/views/details/account_detail.dart';
 import 'package:flutter_consume_api/views/details/categorical_product.dart';
 import 'package:flutter_consume_api/views/details/detail_per_product.dart';
+import 'package:flutter_consume_api/views/details/pesan_detail.dart';
 import 'package:flutter_consume_api/views/details/search_single_product_by_name.dart';
 import 'package:flutter_consume_api/views/get_all_products_view.dart';
 import 'package:flutter_consume_api/views/get_single_product_view.dart';
+import 'package:flutter_consume_api/views/pesan_view.dart';
 
 class AppRoutes {
   // ! Inject BlocProvider
@@ -42,6 +45,10 @@ class AppRoutes {
   Route onRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
+        return MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        );
+      case "/login":
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
             value: userLoginBloc,
@@ -97,6 +104,15 @@ class AppRoutes {
             child: const CartShopingView(),
           ),
         );
+      case "/pesan":
+        return MaterialPageRoute(
+          builder: (context) => const PesanView(),
+        );
+      case "/chat":
+        return MaterialPageRoute(
+          builder: (context) => const PesanDetail(),
+        );
+
       case "/getSingleProductView":
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(

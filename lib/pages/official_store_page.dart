@@ -110,7 +110,12 @@ class OfficialStorePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  "/pesan",
+                );
+              },
               icon: const FaIcon(FontAwesomeIcons.envelopeOpenText, size: 30)),
           const SizedBox(width: 10),
           IconButton(
